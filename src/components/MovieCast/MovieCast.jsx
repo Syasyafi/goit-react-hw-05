@@ -1,38 +1,34 @@
 import { useEffect, useState } from "react";
-import { fetchRequest } from "../../themoviedb-api";
+import { getCard } from "../../service/movies-card";
 import { useParams } from "react-router-dom";
-import MovieCastList from "../MovieCastList/MovieCastList";
+import css from "./MovieCast.module.css";
 
 export default function MovieCast() {
-  const [cast, setCast] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [card, setCard] = useState([]);
   const { movieId } = useParams();
 
   useEffect(() => {
-    async function getCredits() {
-      try {
-        setLoading(true);
-        setError(false);
-        const res = await fetchRequest(
-          `https://api.themoviedb.org/3/movie/${movieId}/credits`
-        );
-
-        setCast(res.data.cast);
-      } catch (error) {
-        console.error(error);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
+    async function getData() {
+      const response = await getCard(movieId);
+      setCard(response.data.cast);
     }
-    getCredits();
+    getData();
   }, [movieId]);
 
   return (
     <>
-      {error && <p>Something went wrong! Please try again later.</p>}
-      {!loading ? cast && <MovieCastList cast={cast} /> : <p>Loading...</p>}
+      <ul className={css.ul}>
+        {card.map((item) => (
+          <li key={item.id} className={css.li}>
+            <p className={css.name}>{item.name}</p>
+            <img
+              src={`https://image.tmdb.org/t/p/original/${item.profile_path}`}
+              alt={item.name}
+              className={css.img}
+            />
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
