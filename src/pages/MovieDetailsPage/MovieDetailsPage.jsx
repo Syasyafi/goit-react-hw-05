@@ -9,13 +9,14 @@ import css from "./MovieDetailsPage.module.css";
 
 export default function MovieDetailsPage() {
   const [movieDetails, setMovieDetails] = useState(null);
+
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
 
   const location = useLocation();
+
   const { movieId } = useParams();
 
-  // Зберігаємо адресу для кнопки "Go back"
   const backLinkHref = location.state?.from ?? "/movies";
 
   useEffect(() => {
@@ -39,10 +40,10 @@ export default function MovieDetailsPage() {
       <Link to={backLinkHref} className={css.goBack}>
         Go back
       </Link>
+      {movieDetails && <DetailsInfo details={movieDetails} />}
       {loader && <Loader />}
       {error && <Error />}
-      {movieDetails && <DetailsInfo details={movieDetails} />}
-      <h2 className={css.title}>Additional information</h2>
+      <h2 className={css.title}>Edditional information</h2>
       <ul className={css.ul}>
         <li>
           <NavLink to="cast" className={css.navText}>
