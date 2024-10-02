@@ -17,7 +17,7 @@ export default function MovieDetailsPage() {
 
   const { movieId } = useParams();
 
-  const backLinkHref = location.state?.from ?? "/movies";
+  const backLinkHref = useRef(location.state? ?? "/movies");
 
   useEffect(() => {
     async function getMoviesDetails() {
@@ -37,7 +37,7 @@ export default function MovieDetailsPage() {
 
   return (
     <>
-      <Link to={backLinkHref} className={css.goBack}>
+      <Link to={backLinkHref.current} className={css.goBack}>
         Go back
       </Link>
       {movieDetails && <DetailsInfo details={movieDetails} />}
