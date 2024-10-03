@@ -6,6 +6,7 @@ import { NavLink, Link, useLocation } from "react-router-dom";
 import Error from "../../components/Error/Error";
 import Loader from "../../components/Loader/Loader";
 import css from "./MovieDetailsPage.module.css";
+import { useRef } from "react";
 
 export default function MovieDetailsPage() {
   const [movieDetails, setMovieDetails] = useState(null);
@@ -17,7 +18,7 @@ export default function MovieDetailsPage() {
 
   const { movieId } = useParams();
 
-  const backLinkHref = useRef(location.state? ?? "/movies");
+  const backLinkHref = useRef(location.state ?? "/movies");
 
   useEffect(() => {
     async function getMoviesDetails() {
